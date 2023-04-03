@@ -5,7 +5,6 @@ dotenv.config();
 
 export const config = Object.freeze({
     // PORT
-    port: process.env.PORT || 4500,
-    mongodb_uri: process.env.MONGODB_URL
+    port: process.env.PORT || 4500
 
 })
