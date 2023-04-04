@@ -1,18 +1,22 @@
 import { User } from "../models/user";
-import bcrypt from "bcrypt"
 
 
-export const registerUser = async (req, res) => {
-    const name = req.body.name;
-    const email = req.body.email
+export const registerSpeaker = async (req, res) => {
+    const { name , email, phoneNumber, country, brandName, socialMediaLink } = req.body
 
     try {
+        
+
         const user = await User.create({
             name: name,
-            email: email
+            email: email,
+            phoneNumber: phoneNumber,
+            country: country,
+            brandName: brandName, 
+            socialMediaLink: socialMediaLink
         })
+        user.save()
     } catch (error) {
         console.log(error.message)
     }
 }
-
