@@ -1,5 +1,5 @@
-import { speakerSchema } from "../joiSchema/Joischema";
-import { attendeeSchema } from "../joiSchema/Joischema";
+import { speakerSchema } from "../joiSchema/Joischema.js";
+import { attendeeSchema } from "../joiSchema/Joischema.js";
 
 export const validateSpeaker =  (req, res, next) => {
     try {

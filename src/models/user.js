@@ -8,7 +8,8 @@ const speakerSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        lowercase: true
+        lowercase: true,
+        unique: true
     },
     phoneNumber: {
         type: String,
@@ -23,7 +24,7 @@ const speakerSchema = new mongoose.Schema({
         required: true
     },
     socialMediaLink: {
-        type: string,
+        type: String,
         required: true
     }
 });
@@ -36,7 +37,10 @@ const attendeeSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        lowercase: true
+        lowercase: true,
+        index: {
+            unique: true,
+        }
     }
 })
 

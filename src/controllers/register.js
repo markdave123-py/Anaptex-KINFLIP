@@ -1,48 +1,84 @@
-import {Speaker, Attendee} from "../models/user";
+import {Speaker, Attendee} from "../models/user.js";
 
 
 export const registerSpeaker = async (req, res) => {
     const { name , email, phoneNumber, country, brandName, socialMediaLink } = req.body
 
-    const userExsists = await Speaker.findOne({email: email})
-    .then(user => {
-        if (user){
-            console.log('user with this email already exists!!')
-        }else{
-            try {
-                const user = Speaker.create({
-                    name: name,
-                    email: email,
-                    phoneNumber: phoneNumber,
-                    country: country,
-                    brandName: brandName, 
-                    socialMediaLink: socialMediaLink
-                })
-                user.save()
-            } catch (error) {
-                console.log(error.message)
-            }
-        }
+    if(!name || !email || !phoneNumber || !country || !brandName || !socialMediaLink){
+        res.status(403).json({message: 'pls input the required infromations!!'})
+    }
 
+    const userExists = await Speaker.findOne({email: email})
+
+    if (userExists){
+        res.status(403).json({message: 'user with this email already exists!!'})
+        console.log('user with this email already exists!!');
+        return
+    }
+
+    try {
+    const speaker = new Speaker({
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber,
+        country: country,
+        brandName: brandName, 
+        socialMediaLink: socialMediaLink
     })
+
+    await speaker.save()
+    console.log('user sucessfully created')
+    return res.json({
+        speaker: speaker
+    })
+    
+  } catch (error) {
+    console.log(error.message);
+    }
+
 
    
 }
 
 export const registerAttendee = async (req, res) => {
-    const { name , email, phoneNumber, country, brandName, socialMediaLink } = req.body
+    const { name , email } = req.body
+
+    if(!name || !email){
+        res.status(403).json({message: 'pls input the required infromations!!'})
+    }
+
+    const userExists = await Attendee.findOne({email: email})
+
+    if (userExists){
+        res.status(403).json({message: 'user with this email already exists!!'})
+        console.log('user with this email already exists!!');
+        return 
+    }
 
     try {
-        const user = await User.create({
+        const attendee = new Attendee({
             name: name,
-            email: email,
-            phoneNumber: phoneNumber,
-            country: country,
-            brandName: brandName, 
-            socialMediaLink: socialMediaLink
+            email: email
         })
-        user.save()
+        await attendee.save()
+        console.log('user sucessfully created')
+        return res.json({
+            attendee: attendee
+         })
     } catch (error) {
         console.log(error.message)
     }
+}
+
+
+export const getSpeakers = async (req, res, next) => {
+    const speakers = await Speaker.find()
+    const attendee = await Attendee.find()
+
+    res.json({
+        speakers: speakers,
+        attendee: attendee
+    })
+
+    return 
 }
